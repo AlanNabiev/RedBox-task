@@ -1,8 +1,15 @@
 <template>
   <div class="input">
     <label class="input__label">{{ label }}</label>
-    <div class="input__container">
+    <div
+      :class="
+        focusStatus ? 'border-gray-800 border-2' : 'border-purple-300 border'
+      "
+      class="input__container"
+    >
       <input
+        @focus="focusChange"
+        @blur="focusChange"
         @input="$emit('input', $event.target.value)"
         :placeholder="placeholder"
         :type="type"
@@ -45,6 +52,16 @@ export default {
     validationErrors: {
       type: Array
     }
+  },
+  data() {
+    return {
+      focusStatus: false
+    };
+  },
+  methods: {
+    focusChange() {
+      this.focusStatus = !this.focusStatus;
+    }
   }
 };
 </script>
@@ -66,7 +83,6 @@ export default {
 
   &__container {
     @apply px-4 py-3 rounded flex items-center;
-    border: 1px solid #cdb1fb;
   }
 }
 .Errors__list {

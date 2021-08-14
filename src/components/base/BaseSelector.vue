@@ -3,7 +3,7 @@
     <div class="input">
       <label class="input__label">{{ label }}</label>
       <select
-        class="input__container w-full"
+        class="input__container border border-purple-300 w-full"
         @input="$emit('input', $event.target.value)"
       >
         <option disabled selected>Выберите рейтинг</option>
