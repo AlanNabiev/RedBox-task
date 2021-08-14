@@ -1,15 +1,16 @@
 <template>
   <div class="form__container">
-    <base-title titleString="Информация об организаторе"></base-title>
+    <base-title>Информация об организаторе</base-title>
     <base-input
+      class="my-8"
       v-model="form.organiser"
       @input="$v.form.organiser.$touch"
       :validationErrors="organiserErrors"
       label="Организатор"
       placeholder="Coca-Cola"
     ></base-input>
-    <base-title titleString="Контактные данные"></base-title>
-    <div class="grid grid-cols-3 gap-6">
+    <base-title>Контактные данные</base-title>
+    <div class="grid grid-cols-3 gap-6 my-8">
       <base-input
         v-model="form.phone"
         v-mask="'+7 (###) ###-##-##'"
@@ -34,15 +35,16 @@
         placeholder="Москва"
       ></base-input>
     </div>
-    <base-title titleString="Общая информация"></base-title>
+    <base-title>Общая информация</base-title>
     <base-input
+      class="my-8"
       v-model="form.eventName"
       @input="$v.form.eventName.$touch"
       :validationErrors="eventNameErrors"
       label="Название"
       placeholder="Введите название вашего мероприятия..."
     ></base-input>
-    <base-title titleString="Фотография"></base-title>
+    <base-title>Фотография</base-title>
     <base-file-input
       :initPhoto="form.image"
       v-model="form.image"
@@ -57,7 +59,7 @@
       label="Подробное описание"
       placeholder="Опишите мероприятие.."
     ></base-textarea-input>
-    <base-timer></base-timer>
+    <EventTimer />
     <div class="mt-12 grid grid-cols-2 gap-6">
       <base-selector
         v-model="form.rating"
@@ -73,20 +75,22 @@
       ></base-input>
     </div>
     <div class="flex">
-      <base-button @click="clearTimeForm" class="mr-5 nav-btn" width="285"
+      <base-button @click="clearForm" class="mr-5 nav-btn" width="285"
         >Отменить</base-button
       >
-
       <base-button @click="next" class="nav-btn">Далее</base-button>
     </div>
+    {{ form }}
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import FormInputRulesMixin from "@/mixins/FormInputRules.js";
+import EventTimer from "@/components/common/EventTimer.vue";
 export default {
   name: "MainForm",
+  components: { EventTimer },
   mixins: [FormInputRulesMixin],
   data() {
     return {
@@ -105,25 +109,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      ratings: "raitings/ratings",
-      formData: "formData/formData",
-      Dates: "formData/Dates"
+      ratings: "raitings/ratings"
     })
   },
   methods: {
     ...mapActions({
-      fetchRaitings: "raitings/fetchRaitings",
-      sendFormData: "formData/sendFormData"
+      fetchRaitings: "raitings/fetchRaitings"
     }),
-    clearTimeForm() {},
+    clearForm() {
+      window.location.reload();
+    },
     next() {
       this.$v.form.$touch();
       this.$store.dispatch("sendtimerValidate", "invalid");
-      if (!this.$v.form.$error && this.$store.state["formData"].Dates.length) {
+      if (!this.$v.form.$error) {
         this.$store.dispatch("sendFormData", this.form);
         this.$router.push({ name: "ConfirmingForm" });
       } else {
-        console.log("хуево");
+        console.log("hasErrors");
       }
     },
     created() {

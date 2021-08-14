@@ -39,12 +39,7 @@
         <base-title class="mt-23 mb-0" titleString="Контакты"></base-title>
         <base-output icon="phone">{{ formData.phone }}</base-output>
         <base-output icon="mail">{{ formData.email }}</base-output>
-        <base-title
-          :titleString="`${formData.organiser}`"
-          mt="25"
-          mb="1"
-          fw="normal"
-        ></base-title>
+        <h1>{{ formData.organiser }}</h1>
         <p class="result__content--description">Организатор мероприятия</p>
       </div>
       <div class="result__content--img">
@@ -68,13 +63,12 @@
 <script>
 import BaseButton from "../components/base/BaseButton.vue";
 import BaseOutput from "../components/base/BaseOutput.vue";
-import BaseTitle from "../components/base/BaseTitle.vue";
 import DateFormatting from "@/mixins/DateFormatting.js";
 
 export default {
   name: "ConfirmingForm",
   mixins: [DateFormatting],
-  components: { BaseOutput, BaseTitle, BaseButton },
+  components: { BaseOutput, BaseButton },
   computed: {
     formData() {
       return this.$store.getters.formData;
